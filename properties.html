@@ -328,21 +328,22 @@
                     <div class="row g-3">
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label">Location</label>
-                            <input type="text" class="form-control" placeholder="City, State, ZIP">
+                            <input type="text" class="form-control" name="location" placeholder="City, State, ZIP">
                         </div>
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label">Property Type</label>
-                            <select class="form-select">
+                            <select class="form-select" name="type">
                                 <option value="">Any Type</option>
                                 <option value="house">House</option>
                                 <option value="apartment">Apartment</option>
                                 <option value="villa">Villa</option>
                                 <option value="condo">Condo</option>
+                                <option value="loft">Loft</option>
                             </select>
                         </div>
                         <div class="col-lg-2 col-md-6">
                             <label class="form-label">Status</label>
-                            <select class="form-select">
+                            <select class="form-select" name="status">
                                 <option value="">Any Status</option>
                                 <option value="for-sale">For Sale</option>
                                 <option value="for-rent">For Rent</option>
@@ -350,7 +351,7 @@
                         </div>
                         <div class="col-lg-2 col-md-6">
                             <label class="form-label">Price Range</label>
-                            <select class="form-select">
+                            <select class="form-select" name="price">
                                 <option value="">Any Price</option>
                                 <option value="0-300000">$0 - $300,000</option>
                                 <option value="300000-600000">$300,000 - $600,000</option>
@@ -517,87 +518,31 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Sample properties data
-        const properties = [
-            {
-                id: 1,
-                title: "Modern Luxury Villa",
-                price: 850000,
-                location: "Beverly Hills, CA",
-                bedrooms: 4,
-                bathrooms: 3,
-                area: 3200,
-                type: "villa",
-                status: "for-sale",
-                image: "images/image4.jpg"
-            },
-            {
-                id: 2,
-                title: "Downtown Apartment",
-                price: 450000,
-                location: "New York, NY",
-                bedrooms: 2,
-                bathrooms: 2,
-                area: 1200,
-                type: "apartment",
-                status: "for-sale",
-                image: "images/image5.jpg"
-            },
-            {
-                id: 3,
-                title: "Beach Condo",
-                price: 680000,
-                location: "Miami, FL",
-                bedrooms: 2,
-                bathrooms: 2,
-                area: 1400,
-                type: "condo",
-                status: "for-rent",
-                image: "images/image6.jpg"
-            },
-            {
-                id: 4,
-                title: "Suburban Family Home",
-                price: 520000,
-                location: "Austin, TX",
-                bedrooms: 3,
-                bathrooms: 2,
-                area: 2100,
-                type: "house",
-                status: "for-sale",
-                image: "images/image7.jpg"
-            },
-            {
-                id: 5,
-                title: "Luxury Penthouse",
-                price: 1200000,
-                location: "Chicago, IL",
-                bedrooms: 3,
-                bathrooms: 3,
-                area: 2800,
-                type: "apartment",
-                status: "for-sale",
-                image: "images/image8.jpg"
-            },
-            {
-                id: 6,
-                title: "Mountain Retreat",
-                price: 750000,
-                location: "Denver, CO",
-                bedrooms: 4,
-                bathrooms: 3,
-                area: 2600,
-                type: "house",
-                status: "for-sale",
-                image: "images/image9.jpg"
-            }
-        ];
 
-        // Load properties
-        function loadProperties() {
+        let properties = [];
+        let filteredProperties = [];
+
+        // Fetch properties from API
+        async function fetchProperties() {
+            try {
+                const res = await fetch('http://localhost:3000/homes');
+                properties = await res.json();
+                filteredProperties = properties;
+                renderProperties();
+                updatePropertyCount();
+            } catch (err) {
+                console.error('Failed to fetch properties:', err);
+            }
+        }
+
+        // Render properties
+        function renderProperties() {
             const container = document.getElementById('properties-container');
-            
-            container.innerHTML = properties.map(property => `
+            if (!filteredProperties.length) {
+                container.innerHTML = `<div class="col-12 text-center text-muted">No properties found.</div>`;
+                return;
+            }
+            container.innerHTML = filteredProperties.map(property => `
                 <div class="col-lg-4 col-md-6">
                     <div class="property-card">
                         <div class="property-image" style="background-image: url('${property.image}')">
@@ -633,6 +578,118 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        // Update property count
+        function updatePropertyCount() {
+            document.getElementById('property-count').textContent = filteredProperties.length;
+        }
+
+        // Filtering logic
+        function filterProperties() {
+            const form = document.getElementById('property-search-form');
+            const location = form.querySelector('input[name="location"]').value.trim().toLowerCase();
+            const type = form.querySelector('select[name="type"]').value;
+            const status = form.querySelector('select[name="status"]').value;
+            const priceRange = form.querySelector('select[name="price"]').value;
+
+            // Advanced filters
+            const minPrice = parseInt(document.querySelector('.range-input .min').value);
+            const maxPrice = parseInt(document.querySelector('.range-input .max').value);
+
+            let bedrooms = 0;
+            if (document.getElementById('bed-1').checked) bedrooms = 1;
+            if (document.getElementById('bed-2').checked) bedrooms = 2;
+            if (document.getElementById('bed-3').checked) bedrooms = 3;
+            if (document.getElementById('bed-4').checked) bedrooms = 4;
+
+            let bathrooms = 0;
+            if (document.getElementById('bath-1').checked) bathrooms = 1;
+            if (document.getElementById('bath-2').checked) bathrooms = 2;
+            if (document.getElementById('bath-3').checked) bathrooms = 3;
+
+            const size = document.querySelector('.filter-box select.form-select').value;
+
+            filteredProperties = properties.filter(p => {
+                let matches = true;
+                if (location && !p.location.toLowerCase().includes(location)) matches = false;
+                if (type && p.type !== type) matches = false;
+                if (status && p.status !== status) matches = false;
+                if (priceRange) {
+                    const [min, max] = priceRange.split('-');
+                    if (max) {
+                        if (p.price < parseInt(min) || p.price > parseInt(max)) matches = false;
+                    } else if (min && min.endsWith('+')) {
+                        if (p.price < parseInt(min)) matches = false;
+                    }
+                }
+                if (p.price < minPrice || p.price > maxPrice) matches = false;
+                if (bedrooms && p.bedrooms < bedrooms) matches = false;
+                if (bathrooms && p.bathrooms < bathrooms) matches = false;
+                if (size) {
+                    const [minS, maxS] = size.split('-');
+                    if (maxS) {
+                        if (p.area < parseInt(minS) || p.area > parseInt(maxS)) matches = false;
+                    } else if (minS && minS.endsWith('+')) {
+                        if (p.area < parseInt(minS)) matches = false;
+                    }
+                }
+                // Amenities can be added here if present in data
+                return matches;
+            });
+            renderProperties();
+            updatePropertyCount();
+        }
+
+        // Sorting logic
+        document.getElementById('sort-properties').addEventListener('change', function() {
+            const val = this.value;
+            if (val === 'price-asc') filteredProperties.sort((a, b) => a.price - b.price);
+            else if (val === 'price-desc') filteredProperties.sort((a, b) => b.price - a.price);
+            else if (val === 'size-asc') filteredProperties.sort((a, b) => a.area - b.area);
+            else if (val === 'size-desc') filteredProperties.sort((a, b) => b.area - a.area);
+            else filteredProperties.sort((a, b) => b.id - a.id); // newest
+            renderProperties();
+        });
+
+        // Search form filter
+        document.getElementById('property-search-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            filterProperties();
+        });
+
+        // Advanced filter box
+        document.querySelector('.filter-box').addEventListener('submit', function(e) {
+            e.preventDefault();
+            filterProperties();
+        });
+
+        // Price range slider
+        function handlePriceRange() {
+            const minInput = document.querySelector('.range-input .min');
+            const maxInput = document.querySelector('.range-input .max');
+            const minPrice = document.getElementById('min-price');
+            const maxPrice = document.getElementById('max-price');
+            const rangeSelected = document.querySelector('.range-selected');
+
+            function updateRange() {
+                let minVal = parseInt(minInput.value);
+                let maxVal = parseInt(maxInput.value);
+                if (minVal > maxVal) {
+                    [minVal, maxVal] = [maxVal, minVal];
+                    minInput.value = minVal;
+                    maxInput.value = maxVal;
+                }
+                const percent = (val) => ((val - minInput.min) / (minInput.max - minInput.min)) * 100;
+                rangeSelected.style.left = percent(minVal) + '%';
+                rangeSelected.style.right = 100 - percent(maxVal) + '%';
+                minPrice.textContent = '$' + minVal.toLocaleString();
+                maxPrice.textContent = '$' + maxVal.toLocaleString();
+                filterProperties();
+            }
+            minInput.addEventListener('input', updateRange);
+            maxInput.addEventListener('input', updateRange);
+            updateRange();
         }
 
         // Toggle favorite
@@ -719,10 +776,9 @@
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
-            loadProperties();
+            fetchProperties();
             handlePriceRange();
             checkAuthStatus();
-            
             // Mark favorites
             const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
             if (favorites.length > 0) {
