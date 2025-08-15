@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Owner Dashboard - Real Estate</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8f9fa; }
+    .sidebar { height: 100vh; background: #343a40; color: white; padding-top: 1rem; }
+    .sidebar a { color: white; text-decoration: none; display: block; padding: 10px; border-radius: 5px; }
+    .sidebar a:hover { background: #495057; }
+    .form-section { display: none; }
+    #dashboard { display: none; }
+  </style>
+</head>
+<body>
+
+<!-- Login/Registration Page -->
+<div id="loginPage" class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow">
+        <div class="card-body">
+          <h3 class="text-center mb-4">Owner Registration</h3>
+          <form id="ownerForm">
+            <div class="mb-3">
+              <label>Title Deed (Upload)</label>
+              <input type="file" class="form-control" id="ownerDeed" required>
+            </div>
+            <div class="mb-3">
+              <label>House Number</label>
+              <input type="text" class="form-control" id="ownerHouse" required>
+            </div>
+            <div class="mb-3">
+              <label>Government Authentication Number</label>
+              <input type="text" class="form-control" id="ownerGovAuth" required>
+            </div>
+            <div class="mb-3">
+              <label>ID Number</label>
+              <input type="text" class="form-control" id="ownerID" required>
+            </div>
+            <div class="mb-3">
+              <label>Passport Picture</label>
+              <input type="file" class="form-control" id="ownerPassport" required>
+            </div>
+            <div class="mb-3">
+              <label>Email Address</label>
+              <input type="email" class="form-control" id="ownerEmail" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Register & Enter Dashboard</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Owner Dashboard -->
+<div id="dashboard" class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3 col-lg-2 sidebar">
+      <h4 class="text-center">Owner Panel</h4>
+      <a href="#" onclick="showSection('registerProperty')">Register Property</a>
+      <a href="#" onclick="showSection('myProperties')">My Properties</a>
+      <a href="#" onclick="showSection('payments')">Payments</a>
+      <a href="#" onclick="showSection('profile')">Profile</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9 col-lg-10 p-4">
+
+      <!-- Register Property Form -->
+      <div id="registerProperty" class="form-section">
+        <h3>Register New Property</h3>
+        <form id="propertyForm">
+          <div class="mb-3">
+            <label>House Number</label>
+            <input type="text" id="propHouse" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Price</label>
+            <input type="number" id="propPrice" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Condition</label>
+            <select id="propCondition" class="form-control" required>
+              <option value="Good">Good</option>
+              <option value="Needs Repair">Needs Repair</option>
+              <option value="Renovated">Renovated</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit Property</button>
+        </form>
+      </div>
+
+      <!-- My Properties -->
+      <div id="myProperties" class="form-section">
+        <h3>My Properties</h3>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>House Number</th>
+              <th>Price</th>
+              <th>Condition</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="propertiesList">
+            <!-- Dynamically added properties appear here -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Payments -->
+      <div id="payments" class="form-section">
+        <h3>Payments</h3>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="paymentsList">
+            <!-- Example -->
+            <tr>
+              <td>H123</td>
+              <td>$500</td>
+              <td>Paid</td>
+              <td>2025-08-01</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Profile -->
+      <div id="profile" class="form-section">
+  <h3>Profile Settings</h3>
+  <div id="ownerProfileInfo"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Show dashboard if already registered
+  if(localStorage.getItem("ownerRegistered") === "true") {
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+    loadProperties();
+    showSection('registerProperty');
+    showOwnerProfile();
+  }
+
+  // Owner registration form
+  document.getElementById('ownerForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Collect owner info
+    const owner = {
+      deed: document.getElementById("ownerDeed").value,
+      house: document.getElementById("ownerHouse").value,
+      govAuth: document.getElementById("ownerGovAuth").value,
+      id: document.getElementById("ownerID").value,
+      passport: document.getElementById("ownerPassport").value,
+      email: document.getElementById("ownerEmail").value
+    };
+    localStorage.setItem("ownerRegistered", "true");
+    localStorage.setItem("ownerInfo", JSON.stringify(owner));
+    localStorage.setItem("properties", JSON.stringify([])); // Start with empty properties list
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+    showSection('registerProperty');
+    showOwnerProfile();
+    alert("Registration successful! Welcome to your dashboard.");
+  });
+
+  // Show owner profile info in dashboard
+  function showOwnerProfile() {
+    const info = JSON.parse(localStorage.getItem("ownerInfo"));
+    if (!info) return;
+    document.getElementById("ownerProfileInfo").innerHTML = `
+      <ul class="list-group mb-3">
+        <li class="list-group-item"><strong>Title Deed:</strong> ${info.deed}</li>
+        <li class="list-group-item"><strong>House Number:</strong> ${info.house}</li>
+        <li class="list-group-item"><strong>Gov Auth Number:</strong> ${info.govAuth}</li>
+        <li class="list-group-item"><strong>ID Number:</strong> ${info.id}</li>
+        <li class="list-group-item"><strong>Passport Picture:</strong> ${info.passport}</li>
+        <li class="list-group-item"><strong>Email:</strong> ${info.email}</li>
+      </ul>
+    `;
+  }
+
+  // Property form handler
+  document.getElementById('propertyForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    let house = document.getElementById("propHouse").value;
+    let price = document.getElementById("propPrice").value;
+    let condition = document.getElementById("propCondition").value;
+
+    let properties = JSON.parse(localStorage.getItem("properties")) || [];
+    properties.push({ house, price, condition });
+    localStorage.setItem("properties", JSON.stringify(properties));
+
+    loadProperties();
+    showSection('myProperties');
+    document.getElementById("propertyForm").reset();
+    alert("Property added successfully!");
+  });
+
+  // Load properties into table
+  function loadProperties() {
+    let list = document.getElementById("propertiesList");
+    list.innerHTML = "";
+    let properties = JSON.parse(localStorage.getItem("properties")) || [];
+    properties.forEach((p, index) => {
+      list.innerHTML += `
+        <tr>
+          <td>${p.house}</td>
+          <td>$${p.price}</td>
+          <td>${p.condition}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" onclick="updatePrice(${index})">Update Price</button>
+            <button class="btn btn-secondary btn-sm" onclick="updateCondition(${index})">Update Condition</button>
+          </td>
+        </tr>
+      `;
+    });
+  }
+
+  // Update price
+  function updatePrice(index) {
+    let newPrice = prompt("Enter new price:");
+    if(newPrice) {
+      let properties = JSON.parse(localStorage.getItem("properties"));
+      properties[index].price = newPrice;
+      localStorage.setItem("properties", JSON.stringify(properties));
+      loadProperties();
+    }
+  }
+
+  // Update condition
+  function updateCondition(index) {
+    let newCondition = prompt("Enter new condition (Good, Needs Repair, Renovated):");
+    if(newCondition) {
+      let properties = JSON.parse(localStorage.getItem("properties"));
+      properties[index].condition = newCondition;
+      localStorage.setItem("properties", JSON.stringify(properties));
+      loadProperties();
+    }
+  }
+
+  // Show section function
+  function showSection(sectionId) {
+  document.querySelectorAll('.form-section').forEach(sec => sec.style.display = 'none');
+  document.getElementById(sectionId).style.display = 'block';
+  if(sectionId === 'profile') showOwnerProfile();
+  }
+</script>
+
+</body>
+</html>

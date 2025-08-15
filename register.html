@@ -191,6 +191,7 @@
                                             <option value="buyer">Buyer</option>
                                             <option value="seller">Seller</option>
                                             <option value="agent">Real Estate Agent</option>
+                                            <option value="owner">Owner</option>
                                         </select>
                                     </div>
                                     <div class="mb-4">
@@ -265,7 +266,6 @@
         // Handle form submission
         document.getElementById('register-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            
             const firstName = document.getElementById('firstName').value;
             const lastName = document.getElementById('lastName').value;
             const email = document.getElementById('email').value;
@@ -274,10 +274,15 @@
             const confirmPassword = document.getElementById('confirmPassword').value;
             const userType = document.getElementById('userType').value;
             const terms = document.getElementById('terms').checked;
-            
+
+            // If user selects Owner, redirect to owners.html for owner registration
+            if (userType === 'owner') {
+                window.location.href = 'owners.html';
+                return;
+            }
+
             // Validation
             let isValid = true;
-            
             // Email validation
             if (!validateEmail(email)) {
                 document.getElementById('email').classList.add('is-invalid');
@@ -286,13 +291,11 @@
             } else {
                 document.getElementById('email').classList.remove('is-invalid');
             }
-            
             // Password validation
             if (password.length < 8) {
                 alert('Password must be at least 8 characters long');
                 isValid = false;
             }
-            
             // Confirm password validation
             if (password !== confirmPassword) {
                 document.getElementById('confirmPassword').classList.add('is-invalid');
@@ -301,13 +304,11 @@
             } else {
                 document.getElementById('confirmPassword').classList.remove('is-invalid');
             }
-            
             // Terms validation
             if (!terms) {
                 alert('Please accept the Terms of Service and Privacy Policy');
                 isValid = false;
             }
-            
             if (isValid) {
                 // Create user object
                 const newUser = {
@@ -321,19 +322,15 @@
                     password, // In real app, this would be hashed
                     registrationDate: new Date().toISOString()
                 };
-                
                 // Store user (in real app, this would be sent to server)
                 let users = JSON.parse(localStorage.getItem('users') || '[]');
-                
                 // Check if email already exists
                 if (users.find(u => u.email === email)) {
                     alert('An account with this email already exists');
                     return;
                 }
-                
                 users.push(newUser);
                 localStorage.setItem('users', JSON.stringify(users));
-                
                 // Auto login the user
                 const userData = {
                     id: newUser.id,
@@ -343,7 +340,6 @@
                     loginTime: new Date().toISOString()
                 };
                 localStorage.setItem('currentUser', JSON.stringify(userData));
-                
                 alert('Account created successfully! Welcome to DreamHome, ' + newUser.name);
                 window.location.href = 'dashboard.html';
             }
