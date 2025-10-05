@@ -1,267 +1,871 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Owner Dashboard - Real Estate</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body { background-color: #f8f9fa; }
-    .sidebar { height: 100vh; background: #343a40; color: white; padding-top: 1rem; }
-    .sidebar a { color: white; text-decoration: none; display: block; padding: 10px; border-radius: 5px; }
-    .sidebar a:hover { background: #495057; }
-    .form-section { display: none; }
-    #dashboard { display: none; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Owner Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<!-- Login/Registration Page -->
-<div id="loginPage" class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6 col-lg-5">
-      <div class="card shadow">
-        <div class="card-body">
-          <h3 class="text-center mb-4">Owner Registration</h3>
-          <form id="ownerForm">
-            <div class="mb-3">
-              <label>Title Deed (Upload)</label>
-              <input type="file" class="form-control" id="ownerDeed" required>
+     Top Navigation Bar 
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-building"></i> RealEstate Pro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-bell-fill"></i>
+                            <span class="badge bg-danger" id="notificationCount">3</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" id="notificationList">
+                            <li><h6 class="dropdown-header">Notifications</h6></li>
+                            <li><a class="dropdown-item" href="#"><small>Rent due from Unit 5A</small></a></li>
+                            <li><a class="dropdown-item" href="#"><small>New maintenance request</small></a></li>
+                            <li><a class="dropdown-item" href="#"><small>Lease expiring in 30 days</small></a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> John Doe
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#" onclick="showSection('profile')"><i class="bi bi-person"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showSection('settings')"><i class="bi bi-gear"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
-            <div class="mb-3">
-              <label>House Number</label>
-              <input type="text" class="form-control" id="ownerHouse" required>
-            </div>
-            <div class="mb-3">
-              <label>Government Authentication Number</label>
-              <input type="text" class="form-control" id="ownerGovAuth" required>
-            </div>
-            <div class="mb-3">
-              <label>ID Number</label>
-              <input type="text" class="form-control" id="ownerID" required>
-            </div>
-            <div class="mb-3">
-              <label>Passport Picture</label>
-              <input type="file" class="form-control" id="ownerPassport" required>
-            </div>
-            <div class="mb-3">
-              <label>Email Address</label>
-              <input type="email" class="form-control" id="ownerEmail" required>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Register & Enter Dashboard</button>
-          </form>
         </div>
-      </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+             Sidebar Navigation 
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" onclick="showSection('dashboard')">
+                                <i class="bi bi-speedometer2"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showSection('properties')">
+                                <i class="bi bi-house-door"></i> Properties
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showSection('tenants')">
+                                <i class="bi bi-people"></i> Tenants
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showSection('financial')">
+                                <i class="bi bi-cash-coin"></i> Financial
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showSection('payments')">
+                                <i class="bi bi-credit-card"></i> Payments
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showSection('maintenance')">
+                                <i class="bi bi-tools"></i> Maintenance
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showSection('analytics')">
+                                <i class="bi bi-graph-up"></i> Analytics
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showSection('map')">
+                                <i class="bi bi-map"></i> Map View
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+             Main Content Area 
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
+                 Dashboard Overview Section 
+                <div id="dashboard-section" class="content-section">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Dashboard Overview</h1>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-calendar"></i> This Month
+                            </button>
+                        </div>
+                    </div>
+
+                     Stats Cards 
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-3">
+                            <div class="card text-white bg-primary">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="card-title">Total Properties</h6>
+                                            <h2 class="mb-0" id="totalProperties">12</h2>
+                                        </div>
+                                        <i class="bi bi-building fs-1"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-white bg-success">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="card-title">Occupied Units</h6>
+                                            <h2 class="mb-0" id="occupiedUnits">45/50</h2>
+                                        </div>
+                                        <i class="bi bi-check-circle fs-1"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-white bg-info">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="card-title">Monthly Revenue</h6>
+                                            <h2 class="mb-0" id="monthlyRevenue">$45,000</h2>
+                                        </div>
+                                        <i class="bi bi-currency-dollar fs-1"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-white bg-warning">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="card-title">Pending Payments</h6>
+                                            <h2 class="mb-0" id="pendingPayments">$8,500</h2>
+                                        </div>
+                                        <i class="bi bi-exclamation-triangle fs-1"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     Recent Activity 
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Recent Properties</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Property</th>
+                                                    <th>Location</th>
+                                                    <th>Units</th>
+                                                    <th>Occupancy</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="recentPropertiesTable">
+                                                 Will be populated by JavaScript 
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Quick Actions</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-primary" onclick="showAddPropertyModal()">
+                                            <i class="bi bi-plus-circle"></i> Add New Property
+                                        </button>
+                                        <button class="btn btn-outline-primary" onclick="showSection('tenants')">
+                                            <i class="bi bi-person-plus"></i> Add New Tenant
+                                        </button>
+                                        <button class="btn btn-outline-primary" onclick="showSection('payments')">
+                                            <i class="bi bi-receipt"></i> Record Payment
+                                        </button>
+                                        <button class="btn btn-outline-primary" onclick="showSection('maintenance')">
+                                            <i class="bi bi-wrench"></i> New Work Order
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 Properties Section 
+                <div id="properties-section" class="content-section" style="display: none;">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Property Management</h1>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <button type="button" class="btn btn-primary me-2" onclick="showAddPropertyModal()">
+                                <i class="bi bi-plus-circle"></i> Add Property
+                            </button>
+                            <div class="btn-group me-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary active" onclick="togglePropertyView('grid')">
+                                    <i class="bi bi-grid-3x3"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="togglePropertyView('list')">
+                                    <i class="bi bi-list"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                     Filters 
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <select class="form-select" id="cityFilter" onchange="filterProperties()">
+                                <option value="">All Cities</option>
+                                <option value="New York">New York</option>
+                                <option value="Los Angeles">Los Angeles</option>
+                                <option value="Chicago">Chicago</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="statusFilter" onchange="filterProperties()">
+                                <option value="">All Status</option>
+                                <option value="occupied">Occupied</option>
+                                <option value="vacant">Vacant</option>
+                                <option value="maintenance">Under Maintenance</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="searchProperty" placeholder="Search properties..." onkeyup="filterProperties()">
+                        </div>
+                    </div>
+
+                     Properties Grid 
+                    <div id="propertiesGrid" class="row g-3">
+                         Will be populated by JavaScript 
+                    </div>
+                </div>
+
+                 Tenants Section 
+                <div id="tenants-section" class="content-section" style="display: none;">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Tenant Management</h1>
+                        <button type="button" class="btn btn-primary" onclick="showAddTenantModal()">
+                            <i class="bi bi-person-plus"></i> Add Tenant
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Tenant Name</th>
+                                            <th>Property</th>
+                                            <th>Unit</th>
+                                            <th>Lease Start</th>
+                                            <th>Lease End</th>
+                                            <th>Rent</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tenantsTable">
+                                         Will be populated by JavaScript 
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 Financial Section 
+                <div id="financial-section" class="content-section" style="display: none;">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Financial Dashboard</h1>
+                        <button type="button" class="btn btn-outline-secondary" onclick="exportFinancialReport()">
+                            <i class="bi bi-download"></i> Export Report
+                        </button>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="text-muted">Total Revenue (This Year)</h6>
+                                    <h2 class="text-success" id="totalRevenue">$540,000</h2>
+                                    <small class="text-muted">+12% from last year</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="text-muted">Total Expenses</h6>
+                                    <h2 class="text-danger" id="totalExpenses">$125,000</h2>
+                                    <small class="text-muted">Maintenance, taxes, utilities</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="text-muted">Net Profit</h6>
+                                    <h2 class="text-primary" id="netProfit">$415,000</h2>
+                                    <small class="text-muted">76.9% profit margin</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Revenue vs Expenses</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="revenueChart" height="100"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Expense Breakdown</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="expenseChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 Payments Section 
+                <div id="payments-section" class="content-section" style="display: none;">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Rent Collection & Payments</h1>
+                        <button type="button" class="btn btn-primary" onclick="showRecordPaymentModal()">
+                            <i class="bi bi-plus-circle"></i> Record Payment
+                        </button>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h6 class="text-muted">Paid</h6>
+                                    <h3 class="text-success">$36,500</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h6 class="text-muted">Pending</h6>
+                                    <h3 class="text-warning">$5,000</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h6 class="text-muted">Overdue</h6>
+                                    <h3 class="text-danger">$3,500</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h6 class="text-muted">Total Expected</h6>
+                                    <h3>$45,000</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Invoice #</th>
+                                            <th>Tenant</th>
+                                            <th>Property</th>
+                                            <th>Amount</th>
+                                            <th>Due Date</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="paymentsTable">
+                                         Will be populated by JavaScript 
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 Maintenance Section 
+                <div id="maintenance-section" class="content-section" style="display: none;">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Maintenance & Work Orders</h1>
+                        <button type="button" class="btn btn-primary" onclick="showAddMaintenanceModal()">
+                            <i class="bi bi-plus-circle"></i> New Work Order
+                        </button>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <div class="card border-warning">
+                                <div class="card-body text-center">
+                                    <h6 class="text-muted">Pending</h6>
+                                    <h2 class="text-warning">8</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-info">
+                                <div class="card-body text-center">
+                                    <h6 class="text-muted">In Progress</h6>
+                                    <h2 class="text-info">5</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-success">
+                                <div class="card-body text-center">
+                                    <h6 class="text-muted">Completed</h6>
+                                    <h2 class="text-success">23</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Request #</th>
+                                            <th>Property</th>
+                                            <th>Issue</th>
+                                            <th>Priority</th>
+                                            <th>Assigned To</th>
+                                            <th>Status</th>
+                                            <th>Cost</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="maintenanceTable">
+                                         Will be populated by JavaScript 
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 Analytics Section 
+                <div id="analytics-section" class="content-section" style="display: none;">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Analytics & Reports</h1>
+                        <button type="button" class="btn btn-outline-secondary" onclick="exportAnalyticsReport()">
+                            <i class="bi bi-download"></i> Download Report
+                        </button>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Occupancy Trends</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="occupancyChart" height="100"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Revenue Growth</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="revenueGrowthChart" height="100"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Property Performance (ROI)</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Property</th>
+                                                    <th>Investment</th>
+                                                    <th>Annual Revenue</th>
+                                                    <th>Annual Expenses</th>
+                                                    <th>Net Income</th>
+                                                    <th>ROI</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="roiTable">
+                                                 Will be populated by JavaScript 
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 Map Section 
+                <div id="map-section" class="content-section" style="display: none;">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Property Map View</h1>
+                    </div>
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <div id="map" style="height: 600px; width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                 Profile Section 
+                <div id="profile-section" class="content-section" style="display: none;">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Profile & Settings</h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Personal Information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="profileForm">
+                                        <div class="mb-3">
+                                            <label class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" value="John Doe">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" class="form-control" value="john.doe@example.com">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Phone</label>
+                                            <input type="tel" class="form-control" value="+1 234 567 8900">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Security</h5>
+                                </div>
+                                <div class="card-body">
+                                    <button class="btn btn-outline-primary w-100 mb-2">Change Password</button>
+                                    <button class="btn btn-outline-primary w-100">Enable 2FA</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 Settings Section 
+                <div id="settings-section" class="content-section" style="display: none;">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Account Settings</h1>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Notification Preferences</h5>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="emailNotif" checked>
+                                <label class="form-check-label" for="emailNotif">Email Notifications</label>
+                            </div>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="rentReminders" checked>
+                                <label class="form-check-label" for="rentReminders">Rent Due Reminders</label>
+                            </div>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="maintenanceAlerts" checked>
+                                <label class="form-check-label" for="maintenanceAlerts">Maintenance Alerts</label>
+                            </div>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="leaseExpiry" checked>
+                                <label class="form-check-label" for="leaseExpiry">Lease Expiry Notifications</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
     </div>
-  </div>
-</div>
 
-<!-- Owner Dashboard -->
-<div id="dashboard" class="container-fluid">
-  <div class="row">
-    <!-- Sidebar -->
-    <div class="col-md-3 col-lg-2 sidebar">
-      <h4 class="text-center">Owner Panel</h4>
-      <a href="#" onclick="showSection('registerProperty')">Register Property</a>
-      <a href="#" onclick="showSection('myProperties')">My Properties</a>
-      <a href="#" onclick="showSection('payments')">Payments</a>
-      <a href="#" onclick="showSection('profile')">Profile</a>
+     Add Property Modal 
+    <div class="modal fade" id="addPropertyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Property</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addPropertyForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Property Name</label>
+                                <input type="text" class="form-control" id="propertyName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Property Type</label>
+                                <select class="form-select" id="propertyType" required>
+                                    <option value="">Select Type</option>
+                                    <option value="apartment">Apartment</option>
+                                    <option value="house">House</option>
+                                    <option value="office">Office</option>
+                                    <option value="land">Land</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" id="propertyAddress" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">City</label>
+                                <input type="text" class="form-control" id="propertyCity" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Number of Units</label>
+                                <input type="number" class="form-control" id="propertyUnits" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Monthly Rent</label>
+                                <input type="number" class="form-control" id="propertyRent" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" id="propertyDescription" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Amenities</label>
+                            <input type="text" class="form-control" id="propertyAmenities" placeholder="e.g., Wi-Fi, Parking, Balcony">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Property Images</label>
+                            <input type="file" class="form-control" id="propertyImages" multiple accept="image/*">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="addProperty()">Add Property</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="col-md-9 col-lg-10 p-4">
-
-      <!-- Register Property Form -->
-      <div id="registerProperty" class="form-section">
-        <h3>Register New Property</h3>
-        <form id="propertyForm">
-          <div class="mb-3">
-            <label>House Number</label>
-            <input type="text" id="propHouse" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label>Price</label>
-            <input type="number" id="propPrice" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label>Condition</label>
-            <select id="propCondition" class="form-control" required>
-              <option value="Good">Good</option>
-              <option value="Needs Repair">Needs Repair</option>
-              <option value="Renovated">Renovated</option>
-            </select>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit Property</button>
-        </form>
-      </div>
-
-      <!-- My Properties -->
-      <div id="myProperties" class="form-section">
-        <h3>My Properties</h3>
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>House Number</th>
-              <th>Price</th>
-              <th>Condition</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="propertiesList">
-            <!-- Dynamically added properties appear here -->
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Payments -->
-      <div id="payments" class="form-section">
-        <h3>Payments</h3>
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Property</th>
-              <th>Amount</th>
-              <th>Status</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody id="paymentsList">
-            <!-- Example -->
-            <tr>
-              <td>H123</td>
-              <td>$500</td>
-              <td>Paid</td>
-              <td>2025-08-01</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Profile -->
-      <div id="profile" class="form-section">
-  <h3>Profile Settings</h3>
-  <div id="ownerProfileInfo"></div>
-      </div>
-
+     Add Tenant Modal 
+    <div class="modal fade" id="addTenantModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Tenant</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addTenantForm">
+                        <div class="mb-3">
+                            <label class="form-label">Tenant Name</label>
+                            <input type="text" class="form-control" id="tenantName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="tenantEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" class="form-control" id="tenantPhone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Property</label>
+                            <select class="form-select" id="tenantProperty" required>
+                                <option value="">Select Property</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Unit Number</label>
+                            <input type="text" class="form-control" id="tenantUnit" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Lease Start</label>
+                                <input type="date" class="form-control" id="leaseStart" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Lease End</label>
+                                <input type="date" class="form-control" id="leaseEnd" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Monthly Rent</label>
+                            <input type="number" class="form-control" id="tenantRent" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="addTenant()">Add Tenant</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<script>
+     Record Payment Modal 
+    <div class="modal fade" id="recordPaymentModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Record Payment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="recordPaymentForm">
+                        <div class="mb-3">
+                            <label class="form-label">Tenant</label>
+                            <select class="form-select" id="paymentTenant" required>
+                                <option value="">Select Tenant</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Amount</label>
+                            <input type="number" class="form-control" id="paymentAmount" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Payment Method</label>
+                            <select class="form-select" id="paymentMethod" required>
+                                <option value="">Select Method</option>
+                                <option value="cash">Cash</option>
+                                <option value="bank">Bank Transfer</option>
+                                <option value="card">Credit/Debit Card</option>
+                                <option value="mpesa">M-Pesa</option>
+                                <option value="paypal">PayPal</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Payment Date</label>
+                            <input type="date" class="form-control" id="paymentDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Notes</label>
+                            <textarea class="form-control" id="paymentNotes" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="recordPayment()">Record Payment</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  // Show dashboard if already registered
-  if(localStorage.getItem("ownerRegistered") === "true") {
-    document.getElementById("loginPage").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
-    loadProperties();
-    showSection('registerProperty');
-    showOwnerProfile();
-  }
+     Add Maintenance Modal 
+    <div class="modal fade" id="addMaintenanceModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Work Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addMaintenanceForm">
+                        <div class="mb-3">
+                            <label class="form-label">Property</label>
+                            <select class="form-select" id="maintenanceProperty" required>
+                                <option value="">Select Property</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Issue Description</label>
+                            <textarea class="form-control" id="maintenanceIssue" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Priority</label>
+                            <select class="form-select" id="maintenancePriority" required>
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                                <option value="urgent">Urgent</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Assign To</label>
+                            <input type="text" class="form-control" id="maintenanceAssignee" placeholder="Service provider name">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Estimated Cost</label>
+                            <input type="number" class="form-control" id="maintenanceCost">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Photos</label>
+                            <input type="file" class="form-control" id="maintenancePhotos" multiple accept="image/*">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="addMaintenance()">Create Work Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  // Owner registration form
-  document.getElementById('ownerForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    // Collect owner info
-    const owner = {
-      deed: document.getElementById("ownerDeed").value,
-      house: document.getElementById("ownerHouse").value,
-      govAuth: document.getElementById("ownerGovAuth").value,
-      id: document.getElementById("ownerID").value,
-      passport: document.getElementById("ownerPassport").value,
-      email: document.getElementById("ownerEmail").value
-    };
-    localStorage.setItem("ownerRegistered", "true");
-    localStorage.setItem("ownerInfo", JSON.stringify(owner));
-    localStorage.setItem("properties", JSON.stringify([])); // Start with empty properties list
-    document.getElementById("loginPage").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
-    showSection('registerProperty');
-    showOwnerProfile();
-    alert("Registration successful! Welcome to your dashboard.");
-  });
-
-  // Show owner profile info in dashboard
-  function showOwnerProfile() {
-    const info = JSON.parse(localStorage.getItem("ownerInfo"));
-    if (!info) return;
-    document.getElementById("ownerProfileInfo").innerHTML = `
-      <ul class="list-group mb-3">
-        <li class="list-group-item"><strong>Title Deed:</strong> ${info.deed}</li>
-        <li class="list-group-item"><strong>House Number:</strong> ${info.house}</li>
-        <li class="list-group-item"><strong>Gov Auth Number:</strong> ${info.govAuth}</li>
-        <li class="list-group-item"><strong>ID Number:</strong> ${info.id}</li>
-        <li class="list-group-item"><strong>Passport Picture:</strong> ${info.passport}</li>
-        <li class="list-group-item"><strong>Email:</strong> ${info.email}</li>
-      </ul>
-    `;
-  }
-
-  // Property form handler
-  document.getElementById('propertyForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    let house = document.getElementById("propHouse").value;
-    let price = document.getElementById("propPrice").value;
-    let condition = document.getElementById("propCondition").value;
-
-    let properties = JSON.parse(localStorage.getItem("properties")) || [];
-    properties.push({ house, price, condition });
-    localStorage.setItem("properties", JSON.stringify(properties));
-
-    loadProperties();
-    showSection('myProperties');
-    document.getElementById("propertyForm").reset();
-    alert("Property added successfully!");
-  });
-
-  // Load properties into table
-  function loadProperties() {
-    let list = document.getElementById("propertiesList");
-    list.innerHTML = "";
-    let properties = JSON.parse(localStorage.getItem("properties")) || [];
-    properties.forEach((p, index) => {
-      list.innerHTML += `
-        <tr>
-          <td>${p.house}</td>
-          <td>$${p.price}</td>
-          <td>${p.condition}</td>
-          <td>
-            <button class="btn btn-warning btn-sm" onclick="updatePrice(${index})">Update Price</button>
-            <button class="btn btn-secondary btn-sm" onclick="updateCondition(${index})">Update Condition</button>
-          </td>
-        </tr>
-      `;
-    });
-  }
-
-  // Update price
-  function updatePrice(index) {
-    let newPrice = prompt("Enter new price:");
-    if(newPrice) {
-      let properties = JSON.parse(localStorage.getItem("properties"));
-      properties[index].price = newPrice;
-      localStorage.setItem("properties", JSON.stringify(properties));
-      loadProperties();
-    }
-  }
-
-  // Update condition
-  function updateCondition(index) {
-    let newCondition = prompt("Enter new condition (Good, Needs Repair, Renovated):");
-    if(newCondition) {
-      let properties = JSON.parse(localStorage.getItem("properties"));
-      properties[index].condition = newCondition;
-      localStorage.setItem("properties", JSON.stringify(properties));
-      loadProperties();
-    }
-  }
-
-  // Show section function
-  function showSection(sectionId) {
-  document.querySelectorAll('.form-section').forEach(sec => sec.style.display = 'none');
-  document.getElementById(sectionId).style.display = 'block';
-  if(sectionId === 'profile') showOwnerProfile();
-  }
-</script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+    <script src="app.js"></script>
 </body>
 </html>
+
