@@ -409,9 +409,17 @@
             users.push(userData);
             localStorage.setItem('registeredUsers', JSON.stringify(users));
             
-            alert('Registration successful! Please login to continue.');
-            window.location.href = 'login.html';
+            // Set currentUser and redirect for owner
+            if (selectedRole === 'owner') {
+                localStorage.setItem('currentUser', JSON.stringify(userData));
+                alert('Registration successful! Redirecting to your dashboard...');
+                window.location.href = 'owners.html';
+            } else {
+                alert('Registration successful! Please login to continue.');
+                window.location.href = 'login.html';
+            }
         }
     </script>
 </body>
 </html>
+ 
