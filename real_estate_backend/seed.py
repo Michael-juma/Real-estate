@@ -8,10 +8,7 @@ with app.app_context():
     db.drop_all()
     db.create_all()
 
-    # =====================================================
-    # USERS
-    # =====================================================
-    print("👤 Seeding users...")
+    print("Seeding users...")
     owner1 = User(
         full_name="John Doe",
         email="john@estate.com",
@@ -51,10 +48,7 @@ with app.app_context():
     db.session.add_all([owner1, tenant1, agent1, buyer1, seller1])
     db.session.commit()
 
-    # =====================================================
-    # PROPERTIES
-    # =====================================================
-    print("🏘️ Seeding properties...")
+    print("Seeding properties...")
     prop1 = Property(
         title="Luxury Apartment in Kilimani",
         description="A beautiful 3-bedroom apartment located in Kilimani, Nairobi, with modern finishes, a swimming pool, and ample parking space.",
@@ -95,10 +89,7 @@ with app.app_context():
     db.session.add_all([prop1, prop2, prop3, prop4])
     db.session.commit()
 
-    # =====================================================
-    # PROPERTY IMAGES
-    # =====================================================
-    print("🖼️ Seeding property images...")
+    print("Seeding property images...")
     images = [
         PropertyImage(image_url="https://example.com/apartment1.jpg", property_id=prop1.id),
         PropertyImage(image_url="https://example.com/apartment2.jpg", property_id=prop1.id),
@@ -111,10 +102,8 @@ with app.app_context():
     db.session.add_all(images)
     db.session.commit()
 
-    # =====================================================
-    # PAYMENTS
-    # =====================================================
-    print("💰 Seeding payments...")
+
+    print("Seeding payments...")
     payment1 = Payment(
         amount=85000.00,
         payment_type="rent",
@@ -143,10 +132,7 @@ with app.app_context():
     db.session.add_all([payment1, payment2, payment3])
     db.session.commit()
 
-    # =====================================================
-    # MAINTENANCE
-    # =====================================================
-    print("🧰 Seeding maintenance records...")
+    print(" Seeding maintenance records...")
     maintenance1 = Maintenance(
         issue="Leaking pipe",
         description="Bathroom pipe leaking in master bedroom. Requires urgent repair.",
@@ -175,4 +161,4 @@ with app.app_context():
     db.session.add_all([maintenance1, maintenance2, maintenance3])
     db.session.commit()
 
-    print("✅ Database seeded successfully with users, properties, images, payments, and maintenance records!")
+    print("Database seeded successfully with users, properties, images, payments, and maintenance records!")

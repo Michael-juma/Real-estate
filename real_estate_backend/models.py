@@ -5,9 +5,7 @@ from datetime import datetime
 
 db = SQLAlchemy()
 
-# ===========================================================
-# USERS TABLE
-# ===========================================================
+
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -28,9 +26,7 @@ class User(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-# ===========================================================
-# PROPERTY TABLE
-# ===========================================================
+
 class Property(db.Model):
     __tablename__ = 'properties'
 
@@ -49,9 +45,6 @@ class Property(db.Model):
     payments = db.relationship('Payment', back_populates='property', lazy=True)
     maintenances = db.relationship('Maintenance', back_populates='property', lazy=True)
 
-# ===========================================================
-# PROPERTY IMAGES TABLE
-# ===========================================================
 class PropertyImage(db.Model):
     __tablename__ = 'property_images'
 
@@ -61,9 +54,7 @@ class PropertyImage(db.Model):
 
     property = db.relationship('Property', back_populates='images')
 
-# ===========================================================
-# PAYMENT TABLE
-# ===========================================================
+
 class Payment(db.Model):
     __tablename__ = 'payments'
 
@@ -79,9 +70,6 @@ class Payment(db.Model):
     user = db.relationship('User', back_populates='payments')
     property = db.relationship('Property', back_populates='payments')
 
-# ===========================================================
-# MAINTENANCE TABLE
-# ===========================================================
 class Maintenance(db.Model):
     __tablename__ = 'maintenances'
 
