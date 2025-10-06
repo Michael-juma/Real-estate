@@ -5,10 +5,7 @@ name = "pypi"
 
 [packages]
 faker = "*"
-flask = "*"
-flask-migrate = "*"
 flask-restful = "*" 
-flask-sqlalchemy = "*"
 Werkzeug = "*"
 importlib-metadata = "*"
 importlib-resources = "*"
@@ -18,6 +15,9 @@ flask_cors="*"
 flask-bcrypt="*"
 sqlalchemy = "*"
 flask-jwt-extended = "*"
+flask = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
 
 [dev-packages]
 
