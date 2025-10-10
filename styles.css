@@ -239,3 +239,161 @@ canvas {
     padding: 2rem 1rem;
   }
 }
+/* Hero Section Styling */
+.hero-section {
+  min-height: 400px;
+  /* Updated hero background with modern luxury real estate building */
+  background: linear-gradient(135deg, rgba(13, 110, 253, 0.9), rgba(108, 117, 125, 0.8)),
+    url("/placeholder.svg?height=600&width=1920");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.hero-section .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Feature Box Styling */
+.feature-box {
+  background: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Card Styling */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+}
+
+.card img {
+  height: 300px;
+  object-fit: cover;
+}
+
+/* Navbar Styling */
+.navbar-brand {
+  font-size: 1.5rem;
+}
+
+.nav-link {
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #0d6efd !important;
+}
+
+/* Footer Styling */
+footer a {
+  transition: opacity 0.3s ease;
+}
+
+footer a:hover {
+  opacity: 0.7;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: 300px;
+  }
+
+  .display-5 {
+    font-size: 2rem;
+  }
+}
+/* Hero Section Styling */
+.hero-section {
+  min-height: 400px;
+  /* Updated hero background with provided Pinterest image */
+  background: linear-gradient(135deg, rgba(13, 110, 253, 0.9), rgba(108, 117, 125, 0.8)),
+    url("https://i.pinimg.com/1200x/43/20/f4/4320f45b6d1b984a3cfd0860627a9839.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.hero-section .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Feature Box Styling */
+.feature-box {
+  background: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Card Styling */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+}
+
+.card img {
+  height: 300px;
+  object-fit: cover;
+}
+
+/* Navbar Styling */
+.navbar-brand {
+  font-size: 1.5rem;
+}
+
+.nav-link {
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #0d6efd !important;
+}
+
+/* Footer Styling */
+footer a {
+  transition: opacity 0.3s ease;
+}
+
+footer a:hover {
+  opacity: 0.7;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: 300px;
+  }
+
+  .display-5 {
+    font-size: 2rem;
+  }
+}
