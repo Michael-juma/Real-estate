@@ -1154,7 +1154,7 @@
                         <button class="gallery-nav prev" onclick="changeGalleryImage(-1)">
                             <i class="fas fa-chevron-left"></i>
                         </button>
-                        <img id="galleryMainImage" class="gallery-main-image" src="/placeholder.svg" alt="Property">
+                        <img id="galleryMainImage" class="gallery-main-image" src="/placeholder.svg" alt="Property" onerror="this.onerror=null;this.src='https://picsum.photos/800/450?random=1'">
                         <div class="room-label" id="roomLabel">Living Room</div>
                         <button class="gallery-nav next" onclick="changeGalleryImage(1)">
                             <i class="fas fa-chevron-right"></i>
@@ -1486,7 +1486,10 @@
                 const res = await fetch('http://localhost:3000/homes');
                 properties = await res.json();
             } catch (err) {
-                console.log('[v0] Using sample data as API is not available');
+                console.warn('[v0] Failed to fetch properties from API, falling back to sample data.', err);
+                if (err && err.message && err.message.includes('Failed to fetch')) {
+                    console.warn('It looks like json-server may not be running on http://localhost:3000. Run: json-server --watch db.json --port 3000');
+                }
                 properties = sampleProperties;
             }
             filteredProperties = properties;
@@ -1660,8 +1663,13 @@
         // Check authentication status and update navigation
         function checkAuthStatus() {
             const user = JSON.parse(localStorage.getItem('currentUser'));
-            const authNav = document.getElementById('auth-nav'); // Assuming you have an element with this ID for auth links
-            
+            const authNav = document.getElementById('auth-nav'); // element for auth links
+
+            if (!authNav) {
+                // No auth nav element present on this page — avoid trying to update it
+                return;
+            }
+
             if (user) {
                 authNav.innerHTML = `
                     <li class="nav-item dropdown">
@@ -1677,9 +1685,7 @@
                     </li>
                 `;
             } else {
-                // If user is not logged in, show login/register links (or as per your design)
-                // For this example, we assume the initial HTML had login/register links and we don't need to do anything here if they are static
-                // If they are dynamically added, you might need to add them here.
+                // If not logged in, leave the default links intact
             }
         }
 

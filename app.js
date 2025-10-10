@@ -580,7 +580,7 @@ function addProperty() {
     occupiedUnits: 0,
     rent,
     status: "vacant",
-    image: `/placeholder.svg?height=200&width=300&query=${type} building`,
+  image: `https://picsum.photos/seed/${encodeURIComponent(type)} /800/450`.replace(/\s+/g, ''),
     amenities,
     description,
   }

@@ -244,7 +244,7 @@ canvas {
   min-height: 400px;
   /* Updated hero background with modern luxury real estate building */
   background: linear-gradient(135deg, rgba(13, 110, 253, 0.9), rgba(108, 117, 125, 0.8)),
-    url("/placeholder.svg?height=600&width=1920");
+    url("https://picsum.photos/1920/600?random=12");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
