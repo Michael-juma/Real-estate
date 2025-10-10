@@ -1,108 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Task Management App</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Task Management</title>
+
+  <!-- Bootstrap & FontAwesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">Task Management</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="about.html">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contact</a>
-                    </li>
-                    <ul class="navbar-nav ms-auto" id="auth-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="login.html">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="register.html">Register</a>
-                        </li>
-                    </ul>
-                </ul>
-            </div>
-        </div>
-    </nav>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3 sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-primary" href="index.html">Task<span class="text-dark">Management</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <!-- Main Content -->
-    <div class="container mt-5">
-        <h1>About Us</h1>
-        <p>Welcome to Task Management, your go-to solution for efficient task management and team collaboration. We are dedicated to providing you with the tools you need to stay organized, meet deadlines, and achieve your goals.</p>
-
-        <h2>Our Mission</h2>
-        <p>Our mission is to simplify task management and enhance productivity for individuals and teams. We believe that effective task management is the key to success, and we are committed to delivering a user-friendly and feature-rich platform that empowers you to accomplish more.</p>
-
-        <h2>What We Offer</h2>
-        <ul>
-            <li><b>Task Creation and Management:</b> Easily create, assign, and track tasks with detailed descriptions, due dates, and priorities.</li>
-            <li><b>Team Collaboration:</b> Collaborate seamlessly with your team members, share updates, and exchange feedback in real-time.</li>
-            <li><b>Progress Tracking:</b> Monitor your progress with visual dashboards and reports, ensuring that you stay on track and meet your objectives.</li>
-            <li><b>Customizable Workflows:</b> Tailor your workflows to match your unique needs and preferences, optimizing your productivity and efficiency.</li>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto text-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link active text-primary fw-semibold" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="register.html">Register</a></li>
         </ul>
-
-        <h2>Our Team</h2>
-        <p>We are a team of passionate developers, designers, and project managers who are dedicated to creating the best task management experience for you. With years of experience in the industry, we understand the challenges you face and are committed to providing you with the solutions you need.</p>
-
-        <h2>Contact Us</h2>
-        <p>If you have any questions, feedback, or suggestions, please don't hesitate to <a href="contact.html">contact us</a>. We would love to hear from you!</p>
+      </div>
     </div>
+  </nav>
 
-    <!-- Footer -->
-    <footer class="footer mt-5 bg-light">
-        <div class="container text-center py-3">
-            <p>&copy; 2024 Task Management. All rights reserved.</p>
+  <!-- Hero Section -->
+  <section class="hero-section text-center text-white d-flex align-items-center justify-content-center position-relative">
+    <div class="overlay"></div>
+    <div class="position-relative z-2 px-3">
+      <h1 class="display-5 fw-bold mb-3">About Us</h1>
+      <p class="lead mb-0">Discover our story, mission, and the team driving Task Management forward.</p>
+    </div>
+  </section>
+
+  <!-- Introduction Section -->
+  <section class="py-5 text-center">
+    <div class="container">
+      <span class="badge bg-light text-primary mb-2 px-3 py-2">ABOUT US</span>
+      <h2 class="fw-bold mb-3"><span class="text-primary">Introduction</span> To The Best Task Management Platform</h2>
+      <p class="text-muted mx-auto" style="max-width: 700px;">
+        Task Management simplifies your daily workflow with seamless collaboration, clear goals, and efficient tracking.
+      </p>
+
+      <div class="row mt-5 g-4">
+        <div class="col-md-4 col-sm-12">
+          <div class="feature-box p-4 shadow-sm rounded-4 h-100">
+            <i class="fa-solid fa-tag fa-2x text-primary mb-3"></i>
+            <h5>Best Productivity</h5>
+            <p class="text-muted">Maximize efficiency and streamline your daily tasks effortlessly.</p>
+          </div>
         </div>
-    </footer>
+        <div class="col-md-4 col-sm-12">
+          <div class="feature-box p-4 shadow-sm rounded-4 h-100">
+            <i class="fa-solid fa-chart-line fa-2x text-danger mb-3"></i>
+            <h5>Progress Tracking</h5>
+            <p class="text-muted">Monitor your team’s performance and achieve targets smoothly.</p>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+          <div class="feature-box p-4 shadow-sm rounded-4 h-100">
+            <i class="fa-solid fa-people-group fa-2x text-warning mb-3"></i>
+            <h5>Team Collaboration</h5>
+            <p class="text-muted">Collaborate in real-time with teammates for efficient project delivery.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Check authentication status
-        function checkAuthStatus() {
-            const user = JSON.parse(localStorage.getItem('currentUser'));
-            const authNav = document.getElementById('auth-nav');
-            
-            if (user) {
-                authNav.innerHTML = `
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user me-1"></i>${user.name}
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="dashboard.html">Dashboard</a></li>
-                            <li><a class="dropdown-item" href="profile.html">Profile</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#" onclick="logout()">Logout</a></li>
-                        </ul>
-                    </li>
-                `;
-            }
-        }
+  <!-- Team Section -->
+  <section class="py-5 bg-light text-center">
+    <div class="container">
+      <span class="badge bg-white text-primary mb-2 px-3 py-2">OUR TEAM</span>
+      <h2 class="fw-bold mb-4 text-dark">Meet Our <span class="text-danger">Team Members</span></h2>
+      <p class="text-muted mb-5 mx-auto" style="max-width: 650px;">
+        Our talented professionals work passionately to make Task Management your productivity partner.
+      </p>
 
-        // Logout function
-        function logout() {
-            localStorage.removeItem('currentUser');
-            window.location.href = 'index.html';
-        }
+      <div class="row justify-content-center g-4">
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="card border-0 shadow-sm rounded-4 h-100">
+            <img src="https://randomuser.me/api/portraits/women/1.jpg" class="card-img-top rounded-top-4" alt="Team Member">
+            <div class="card-body">
+              <h6 class="fw-bold mb-0">Sarah Johnson</h6>
+              <small class="text-muted">CEO, Founder</small>
+              <div class="mt-3">
+                <a href="#" class="text-muted mx-1"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="text-muted mx-1"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-muted mx-1"><i class="fab fa-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        // Run authentication check when the page loads
-        checkAuthStatus();
-    </script>
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="card border-0 shadow-sm rounded-4 h-100">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" class="card-img-top rounded-top-4" alt="Team Member">
+            <div class="card-body">
+              <h6 class="fw-bold mb-0">James Carter</h6>
+              <small class="text-muted">Project Manager</small>
+              <div class="mt-3">
+                <a href="#" class="text-muted mx-1"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="text-muted mx-1"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-muted mx-1"><i class="fab fa-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="card border-0 shadow-sm rounded-4 h-100">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" class="card-img-top rounded-top-4" alt="Team Member">
+            <div class="card-body">
+              <h6 class="fw-bold mb-0">Linda Kim</h6>
+              <small class="text-muted">UI/UX Designer</small>
+              <div class="mt-3">
+                <a href="#" class="text-muted mx-1"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="text-muted mx-1"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-muted mx-1"><i class="fab fa-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-5 mt-5">
+    <div class="container text-center">
+      <h5 class="fw-bold mb-3">Task Management</h5>
+      <p class="text-muted">Empowering productivity, collaboration, and growth.</p>
+      <div class="mb-3">
+        <a href="#" class="text-white mx-2"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="text-white mx-2"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="text-white mx-2"><i class="fab fa-linkedin"></i></a>
+      </div>
+      <p class="mb-0 small text-muted">&copy; 2025 Task Management. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

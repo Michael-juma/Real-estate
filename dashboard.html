@@ -166,7 +166,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
+                        <a class="nav-link" href="index.html"><i class="fas fa-home me-1"></i>Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="properties.html">Properties</a>
@@ -371,11 +371,12 @@
         let userInquiries = [];
         let userActivity = [];
 
-        // Check authentication
         function checkAuth() {
             const user = JSON.parse(localStorage.getItem('currentUser'));
-            if (!user) {
-                window.location.href = 'login.html';
+            if (!user || user.role !== 'owner') {
+                // Redirect to home if not logged in or not an owner
+                alert('Access denied. Only property owners can access the dashboard.');
+                window.location.href = 'index.html';
                 return null;
             }
             return user;
@@ -396,10 +397,10 @@
                         <i class="fas fa-user me-1"></i>${user.name}
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="dashboard.html">Dashboard</a></li>
-                        <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                        <li><a class="dropdown-item" href="dashboard.html"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+                        <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user-circle me-2"></i>Profile</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#" onclick="logout()">Logout</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                     </ul>
                 </li>
             `;
@@ -571,5 +572,62 @@
             loadUserInquiries();
         });
     </script>
+        <script>
+        // Render auth/nav links and footer with working links
+        function renderAuthNav() {
+            const authNav = document.getElementById('auth-nav');
+            if (!authNav) return;
+            let currentUser = null;
+            try { currentUser = JSON.parse(localStorage.getItem('currentUser')); } catch(e) { currentUser = null; }
+            if (currentUser && currentUser.role === 'owner') {
+                authNav.innerHTML = `
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-1"></i>${currentUser.name}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="owners.html">Dashboard</a></li>
+                            <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
+                        </ul>
+                    </li>
+                `;
+                const logoutBtn = document.getElementById('logoutBtn');
+                if (logoutBtn) logoutBtn.addEventListener('click', (e) => { e.preventDefault(); localStorage.removeItem('currentUser'); window.location.href = 'index.html'; });
+            } else {
+                authNav.innerHTML = `
+                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="register.html">Register</a></li>
+                `;
+            }
+        }
+
+        function renderFooterLinks() {
+            // If a footer already exists, skip
+            if (document.querySelector('footer')) return;
+            const footer = document.createElement('footer');
+            footer.className = 'bg-dark text-white py-4 mt-5';
+            footer.innerHTML = `
+                <div class="container text-center">
+                    <div class="mb-3">
+                        <a href="index.html" class="text-white me-3">Home</a>
+                        <a href="properties.html" class="text-white me-3">Properties</a>
+                        <a href="about.html" class="text-white me-3">About</a>
+                        <a href="contact.html" class="text-white me-3">Contact</a>
+                        <a href="login.html" class="text-white me-3">Login</a>
+                        <a href="register.html" class="text-white">Register</a>
+                    </div>
+                    <div><small>&copy; ${new Date().getFullYear()} DreamHome. All rights reserved.</small></div>
+                </div>
+            `;
+            document.body.appendChild(footer);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderAuthNav();
+            renderFooterLinks();
+        });
+        </script>
 </body>
 </html>

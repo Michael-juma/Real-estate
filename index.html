@@ -486,14 +486,14 @@
                 <ul class="navbar-nav mx-auto">
                    
                     <li class="nav-item">
-                        <a class="nav-link" href="#about">ABOUT</a>
+                        <a class="nav-link" href="about.html">ABOUT</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="properties.html">PROPERTIES</a>
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link" href="#contact">CONTACT</a>
+                        <a class="nav-link" href="contact.html">CONTACT</a>
                     </li>
                 </ul>
                 <div class="navbar-contact">
@@ -815,8 +815,8 @@
                         <ul>
                             <li><a href="index.html">Home</a></li>
                             <li><a href="properties.html">Properties</a></li>
-                            <li><a href="#about">About Us</a></li>
-                            <li><a href="#contact">Contact Us</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="contact.html">Contact Us</a></li>
                         </ul>
                     </div>
                 </div>
@@ -964,6 +964,22 @@
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
             fetchProperties();
+
+            // If an owner is logged in, add a Dashboard nav link
+            try {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+                if (currentUser && currentUser.role === 'owner') {
+                    const nav = document.querySelector('.navbar-nav.mx-auto');
+                    if (nav && !document.getElementById('dashboardNavLink')) {
+                        const li = document.createElement('li');
+                        li.className = 'nav-item';
+                        li.innerHTML = `<a class="nav-link" id="dashboardNavLink" href="owners.html">DASHBOARD</a>`;
+                        nav.appendChild(li);
+                    }
+                }
+            } catch (e) {
+                // ignore
+            }
         });
     </script>
 </body>

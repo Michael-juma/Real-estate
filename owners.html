@@ -12,7 +12,7 @@
      Top Navigation Bar 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="index.html">
                 <i class="bi bi-building"></i> RealEstate Pro
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -32,15 +32,16 @@
                             <li><a class="dropdown-item" href="#"><small>Lease expiring in 30 days</small></a></li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" id="owner-auth-nav">
+                        <!-- Will be replaced by script with owner name and logout -->
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle"></i> John Doe
+                            <i class="bi bi-person-circle"></i> <span id="ownerName">Owner</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#" onclick="showSection('profile')"><i class="bi bi-person"></i> Profile</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="showSection('settings')"><i class="bi bi-gear"></i> Settings</a></li>
+                            <li><a class="dropdown-item" href="owners.html"><i class="bi bi-toggles"></i> Dashboard</a></li>
+                            <li><a class="dropdown-item" href="profile.html"><i class="bi bi-person"></i> Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                            <li><a class="dropdown-item" href="#" id="ownerLogout"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -866,6 +867,29 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
     <script src="app.js"></script>
+    <script>
+        // Protect page: only allow owners
+        document.addEventListener('DOMContentLoaded', function() {
+            let currentUser = null;
+            try { currentUser = JSON.parse(localStorage.getItem('currentUser')); } catch(e) { currentUser = null; }
+            if (!currentUser || currentUser.role !== 'owner') {
+                // Not allowed
+                alert('Access denied. Only property owners can access this page.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const ownerNameEl = document.getElementById('ownerName');
+            if (ownerNameEl) ownerNameEl.textContent = currentUser.name || currentUser.email || 'Owner';
+
+            const logoutBtn = document.getElementById('ownerLogout');
+            if (logoutBtn) logoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
 </body>
 </html>
 
