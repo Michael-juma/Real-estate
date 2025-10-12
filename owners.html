@@ -3,17 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Property Owner Dashboard</title>
+    <title>Dallah Home - Property Owner Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --info-color: #16a085;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar {
+            min-height: calc(100vh - 56px);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            background: white;
+            position: fixed;
+            top: 56px;
+            left: 0;
+            z-index: 100;
+            padding-top: 20px;
+        }
+
+        .sidebar .nav-link {
+            color: #495057;
+            padding: 12px 20px;
+            margin: 5px 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #e9ecef;
+            color: var(--secondary-color);
+            transform: translateX(5px);
+        }
+
+        .sidebar .nav-link.active {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .main-content {
+            margin-left: 16.666667%;
+            margin-top: 76px;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        .stat-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .property-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .property-card img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .property-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+        }
+
+        .image-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .image-preview {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #dee2e6;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-preview .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .receipt-stamp {
+            width: 150px;
+            height: 150px;
+            border: 3px solid #e74c3c;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(-15deg);
+            opacity: 0.7;
+            position: absolute;
+            right: 50px;
+            top: 50px;
+        }
+
+        .receipt-stamp .stamp-text {
+            font-weight: bold;
+            color: #e74c3c;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 20px;
+        }
+
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #map {
+            height: 600px;
+            width: 100%;
+            border-radius: 15px;
+        }
+
+        .tenant-type-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .modal-lg {
+            max-width: 900px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .gallery-item {
+            position: relative;
+            padding-top: 100%;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+    </style>
 </head>
 <body>
-     Top Navigation Bar 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.html">
-                <i class="bi bi-building"></i> RealEstate Pro
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-building"></i> Dallah Home
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -23,23 +268,19 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown">
                             <i class="bi bi-bell-fill"></i>
-                            <span class="badge bg-danger" id="notificationCount">3</span>
+                            <span class="badge bg-danger" id="notificationCount">0</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" id="notificationList">
                             <li><h6 class="dropdown-header">Notifications</h6></li>
-                            <li><a class="dropdown-item" href="#"><small>Rent due from Unit 5A</small></a></li>
-                            <li><a class="dropdown-item" href="#"><small>New maintenance request</small></a></li>
-                            <li><a class="dropdown-item" href="#"><small>Lease expiring in 30 days</small></a></li>
+                            <li><a class="dropdown-item" href="#"><small>No new notifications</small></a></li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown" id="owner-auth-nav">
-                        <!-- Will be replaced by script with owner name and logout -->
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
                             <i class="bi bi-person-circle"></i> <span id="ownerName">Owner</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="owners.html"><i class="bi bi-toggles"></i> Dashboard</a></li>
-                            <li><a class="dropdown-item" href="profile.html"><i class="bi bi-person"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showSection('profile')"><i class="bi bi-person"></i> Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#" id="ownerLogout"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
                         </ul>
@@ -51,9 +292,9 @@
 
     <div class="container-fluid">
         <div class="row">
-             Sidebar Navigation 
-            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-                <div class="position-sticky pt-3">
+            <!-- Sidebar Navigation -->
+            <nav id="sidebar" class="col-md-2 d-md-block sidebar">
+                <div class="position-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link active" href="#" onclick="showSection('dashboard')">
@@ -67,7 +308,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" onclick="showSection('tenants')">
-                                <i class="bi bi-people"></i> Tenants
+                                <i class="bi bi-people"></i> Tenants & Buyers
                             </a>
                         </li>
                         <li class="nav-item">
@@ -76,18 +317,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="showSection('payments')">
-                                <i class="bi bi-credit-card"></i> Payments
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="showSection('maintenance')">
-                                <i class="bi bi-tools"></i> Maintenance
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="showSection('analytics')">
-                                <i class="bi bi-graph-up"></i> Analytics
+                            <a class="nav-link" href="#" onclick="showSection('receipts')">
+                                <i class="bi bi-receipt"></i> Receipts
                             </a>
                         </li>
                         <li class="nav-item">
@@ -99,28 +330,26 @@
                 </div>
             </nav>
 
-             Main Content Area 
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
-                 Dashboard Overview Section 
+            <!-- Main Content Area -->
+            <main class="col-md-10 main-content">
+                <!-- Dashboard Overview Section -->
                 <div id="dashboard-section" class="content-section">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">Dashboard Overview</h1>
-                        <div class="btn-toolbar mb-2 mb-md-0">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">
-                                <i class="bi bi-calendar"></i> This Month
-                            </button>
-                        </div>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h1 class="h2 animate__animated animate__fadeInDown">Dashboard Overview</h1>
+                        <button type="button" class="btn btn-outline-secondary">
+                            <i class="bi bi-calendar"></i> <span id="currentDate"></span>
+                        </button>
                     </div>
 
-                     Stats Cards 
-                    <div class="row g-3 mb-4">
+                    <!-- Stats Cards -->
+                    <div class="row g-4 mb-4">
                         <div class="col-md-3">
-                            <div class="card text-white bg-primary">
+                            <div class="card stat-card text-white bg-primary animate__animated animate__fadeInUp">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
                                             <h6 class="card-title">Total Properties</h6>
-                                            <h2 class="mb-0" id="totalProperties">12</h2>
+                                            <h2 class="mb-0" id="totalProperties">0</h2>
                                         </div>
                                         <i class="bi bi-building fs-1"></i>
                                     </div>
@@ -128,92 +357,75 @@
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="card text-white bg-success">
+                            <div class="card stat-card text-white bg-success animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
-                                            <h6 class="card-title">Occupied Units</h6>
-                                            <h2 class="mb-0" id="occupiedUnits">45/50</h2>
+                                            <h6 class="card-title">Rented Units</h6>
+                                            <h2 class="mb-0" id="rentedUnits">0</h2>
                                         </div>
-                                        <i class="bi bi-check-circle fs-1"></i>
+                                        <i class="bi bi-key fs-1"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="card text-white bg-info">
+                            <div class="card stat-card text-white bg-info animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="card-title">Sold Properties</h6>
+                                            <h2 class="mb-0" id="soldProperties">0</h2>
+                                        </div>
+                                        <i class="bi bi-house-check fs-1"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card stat-card text-white bg-warning animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
                                             <h6 class="card-title">Monthly Revenue</h6>
-                                            <h2 class="mb-0" id="monthlyRevenue">$45,000</h2>
+                                            <h2 class="mb-0" id="monthlyRevenue">$0</h2>
                                         </div>
                                         <i class="bi bi-currency-dollar fs-1"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="card text-white bg-warning">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h6 class="card-title">Pending Payments</h6>
-                                            <h2 class="mb-0" id="pendingPayments">$8,500</h2>
-                                        </div>
-                                        <i class="bi bi-exclamation-triangle fs-1"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
-                     Recent Activity 
+                    <!-- Quick Actions -->
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Recent Properties</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>Property</th>
-                                                    <th>Location</th>
-                                                    <th>Units</th>
-                                                    <th>Occupancy</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="recentPropertiesTable">
-                                                 Will be populated by JavaScript 
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-header">
+                                <div class="card-header bg-white">
                                     <h5 class="mb-0">Quick Actions</h5>
                                 </div>
                                 <div class="card-body">
-                                    <div class="d-grid gap-2">
-                                        <button class="btn btn-primary" onclick="showAddPropertyModal()">
-                                            <i class="bi bi-plus-circle"></i> Add New Property
-                                        </button>
-                                        <button class="btn btn-outline-primary" onclick="showSection('tenants')">
-                                            <i class="bi bi-person-plus"></i> Add New Tenant
-                                        </button>
-                                        <button class="btn btn-outline-primary" onclick="showSection('payments')">
-                                            <i class="bi bi-receipt"></i> Record Payment
-                                        </button>
-                                        <button class="btn btn-outline-primary" onclick="showSection('maintenance')">
-                                            <i class="bi bi-wrench"></i> New Work Order
-                                        </button>
+                                    <div class="row g-3">
+                                        <div class="col-md-3">
+                                            <button class="btn btn-primary w-100" onclick="showAddPropertyModal()">
+                                                <i class="bi bi-plus-circle"></i> Add New Property
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-outline-primary w-100" onclick="showSection('tenants')">
+                                                <i class="bi bi-person-plus"></i> Add Tenant/Buyer
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-outline-primary w-100" onclick="showSection('receipts')">
+                                                <i class="bi bi-receipt"></i> Generate Receipt
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-outline-primary w-100" onclick="showSection('map')">
+                                                <i class="bi bi-map"></i> View Map
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -221,41 +433,32 @@
                     </div>
                 </div>
 
-                 Properties Section 
+                <!-- Properties Section -->
                 <div id="properties-section" class="content-section" style="display: none;">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
                         <h1 class="h2">Property Management</h1>
-                        <div class="btn-toolbar mb-2 mb-md-0">
-                            <button type="button" class="btn btn-primary me-2" onclick="showAddPropertyModal()">
-                                <i class="bi bi-plus-circle"></i> Add Property
-                            </button>
-                            <div class="btn-group me-2">
-                                <button type="button" class="btn btn-sm btn-outline-secondary active" onclick="togglePropertyView('grid')">
-                                    <i class="bi bi-grid-3x3"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="togglePropertyView('list')">
-                                    <i class="bi bi-list"></i>
-                                </button>
-                            </div>
-                        </div>
+                        <button type="button" class="btn btn-primary" onclick="showAddPropertyModal()">
+                            <i class="bi bi-plus-circle"></i> Add Property
+                        </button>
                     </div>
 
-                     Filters 
-                    <div class="row mb-3">
-                        <div class="col-md-3">
-                            <select class="form-select" id="cityFilter" onchange="filterProperties()">
-                                <option value="">All Cities</option>
-                                <option value="New York">New York</option>
-                                <option value="Los Angeles">Los Angeles</option>
-                                <option value="Chicago">Chicago</option>
-                            </select>
-                        </div>
+                    <!-- Filters -->
+                    <div class="row mb-4">
                         <div class="col-md-3">
                             <select class="form-select" id="statusFilter" onchange="filterProperties()">
                                 <option value="">All Status</option>
-                                <option value="occupied">Occupied</option>
-                                <option value="vacant">Vacant</option>
-                                <option value="maintenance">Under Maintenance</option>
+                                <option value="available">Available</option>
+                                <option value="rented">Rented</option>
+                                <option value="sold">Sold</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="typeFilter" onchange="filterProperties()">
+                                <option value="">All Types</option>
+                                <option value="apartment">Apartment</option>
+                                <option value="house">House</option>
+                                <option value="villa">Villa</option>
+                                <option value="land">Land</option>
                             </select>
                         </div>
                         <div class="col-md-6">
@@ -263,288 +466,81 @@
                         </div>
                     </div>
 
-                     Properties Grid 
-                    <div id="propertiesGrid" class="row g-3">
-                         Will be populated by JavaScript 
+                    <!-- Properties Grid -->
+                    <div id="propertiesGrid" class="row g-4">
+                        <!-- Properties will be dynamically loaded here -->
                     </div>
                 </div>
 
-                 Tenants Section 
+                <!-- Tenants & Buyers Section -->
                 <div id="tenants-section" class="content-section" style="display: none;">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">Tenant Management</h1>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h1 class="h2">Tenants & Buyers Management</h1>
                         <button type="button" class="btn btn-primary" onclick="showAddTenantModal()">
-                            <i class="bi bi-person-plus"></i> Add Tenant
+                            <i class="bi bi-person-plus"></i> Add Tenant/Buyer
                         </button>
                     </div>
 
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Tenant Name</th>
-                                            <th>Property</th>
-                                            <th>Unit</th>
-                                            <th>Lease Start</th>
-                                            <th>Lease End</th>
-                                            <th>Rent</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tenantsTable">
-                                         Will be populated by JavaScript 
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <!-- Tabs for Renters and Buyers -->
+                    <ul class="nav nav-tabs mb-4" id="tenantTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="renters-tab" data-bs-toggle="tab" data-bs-target="#renters" type="button">
+                                <i class="bi bi-key"></i> Renters
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="buyers-tab" data-bs-toggle="tab" data-bs-target="#buyers" type="button">
+                                <i class="bi bi-house-check"></i> Buyers
+                            </button>
+                        </li>
+                    </ul>
 
-                 Financial Section 
-                <div id="financial-section" class="content-section" style="display: none;">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">Financial Dashboard</h1>
-                        <button type="button" class="btn btn-outline-secondary" onclick="exportFinancialReport()">
-                            <i class="bi bi-download"></i> Export Report
-                        </button>
-                    </div>
-
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-4">
+                    <div class="tab-content" id="tenantTabContent">
+                        <!-- Renters Tab -->
+                        <div class="tab-pane fade show active" id="renters" role="tabpanel">
                             <div class="card">
-                                <div class="card-body">
-                                    <h6 class="text-muted">Total Revenue (This Year)</h6>
-                                    <h2 class="text-success" id="totalRevenue">$540,000</h2>
-                                    <small class="text-muted">+12% from last year</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h6 class="text-muted">Total Expenses</h6>
-                                    <h2 class="text-danger" id="totalExpenses">$125,000</h2>
-                                    <small class="text-muted">Maintenance, taxes, utilities</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h6 class="text-muted">Net Profit</h6>
-                                    <h2 class="text-primary" id="netProfit">$415,000</h2>
-                                    <small class="text-muted">76.9% profit margin</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Revenue vs Expenses</h5>
-                                </div>
-                                <div class="card-body">
-                                    <canvas id="revenueChart" height="100"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Expense Breakdown</h5>
-                                </div>
-                                <div class="card-body">
-                                    <canvas id="expenseChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                 Payments Section 
-                <div id="payments-section" class="content-section" style="display: none;">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">Rent Collection & Payments</h1>
-                        <button type="button" class="btn btn-primary" onclick="showRecordPaymentModal()">
-                            <i class="bi bi-plus-circle"></i> Record Payment
-                        </button>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-3">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <h6 class="text-muted">Paid</h6>
-                                    <h3 class="text-success">$36,500</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <h6 class="text-muted">Pending</h6>
-                                    <h3 class="text-warning">$5,000</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <h6 class="text-muted">Overdue</h6>
-                                    <h3 class="text-danger">$3,500</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <h6 class="text-muted">Total Expected</h6>
-                                    <h3>$45,000</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Invoice #</th>
-                                            <th>Tenant</th>
-                                            <th>Property</th>
-                                            <th>Amount</th>
-                                            <th>Due Date</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="paymentsTable">
-                                         Will be populated by JavaScript 
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                 Maintenance Section 
-                <div id="maintenance-section" class="content-section" style="display: none;">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">Maintenance & Work Orders</h1>
-                        <button type="button" class="btn btn-primary" onclick="showAddMaintenanceModal()">
-                            <i class="bi bi-plus-circle"></i> New Work Order
-                        </button>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <div class="card border-warning">
-                                <div class="card-body text-center">
-                                    <h6 class="text-muted">Pending</h6>
-                                    <h2 class="text-warning">8</h2>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card border-info">
-                                <div class="card-body text-center">
-                                    <h6 class="text-muted">In Progress</h6>
-                                    <h2 class="text-info">5</h2>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card border-success">
-                                <div class="card-body text-center">
-                                    <h6 class="text-muted">Completed</h6>
-                                    <h2 class="text-success">23</h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Request #</th>
-                                            <th>Property</th>
-                                            <th>Issue</th>
-                                            <th>Priority</th>
-                                            <th>Assigned To</th>
-                                            <th>Status</th>
-                                            <th>Cost</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="maintenanceTable">
-                                         Will be populated by JavaScript 
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                 Analytics Section 
-                <div id="analytics-section" class="content-section" style="display: none;">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">Analytics & Reports</h1>
-                        <button type="button" class="btn btn-outline-secondary" onclick="exportAnalyticsReport()">
-                            <i class="bi bi-download"></i> Download Report
-                        </button>
-                    </div>
-
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Occupancy Trends</h5>
-                                </div>
-                                <div class="card-body">
-                                    <canvas id="occupancyChart" height="100"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Revenue Growth</h5>
-                                </div>
-                                <div class="card-body">
-                                    <canvas id="revenueGrowthChart" height="100"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Property Performance (ROI)</h5>
-                                </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table table-hover">
                                             <thead>
                                                 <tr>
+                                                    <th>Name</th>
                                                     <th>Property</th>
-                                                    <th>Investment</th>
-                                                    <th>Annual Revenue</th>
-                                                    <th>Annual Expenses</th>
-                                                    <th>Net Income</th>
-                                                    <th>ROI</th>
+                                                    <th>Unit</th>
+                                                    <th>Lease Start</th>
+                                                    <th>Lease End</th>
+                                                    <th>Monthly Rent</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="roiTable">
-                                                 Will be populated by JavaScript 
+                                            <tbody id="rentersTable">
+                                                <!-- Renters will be loaded here -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Buyers Tab -->
+                        <div class="tab-pane fade" id="buyers" role="tabpanel">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Property</th>
+                                                    <th>Purchase Date</th>
+                                                    <th>Purchase Price</th>
+                                                    <th>Payment Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="buyersTable">
+                                                <!-- Buyers will be loaded here -->
                                             </tbody>
                                         </table>
                                     </div>
@@ -554,42 +550,154 @@
                     </div>
                 </div>
 
-                 Map Section 
-                <div id="map-section" class="content-section" style="display: none;">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">Property Map View</h1>
+                <!-- Financial Section -->
+                <div id="financial-section" class="content-section" style="display: none;">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h1 class="h2">Financial Dashboard</h1>
+                        <button type="button" class="btn btn-outline-secondary" onclick="exportFinancialReport()">
+                            <i class="bi bi-download"></i> Export Report
+                        </button>
                     </div>
-                    <div class="card">
-                        <div class="card-body p-0">
-                            <div id="map" style="height: 600px; width: 100%;"></div>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-4">
+                            <div class="card stat-card pulse-animation">
+                                <div class="card-body">
+                                    <h6 class="text-muted">Total Revenue (This Year)</h6>
+                                    <h2 class="text-success" id="totalRevenue">$0</h2>
+                                    <small class="text-muted" id="revenueChange">+0% from last year</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card stat-card pulse-animation" style="animation-delay: 0.2s">
+                                <div class="card-body">
+                                    <h6 class="text-muted">Total Expenses</h6>
+                                    <h2 class="text-danger" id="totalExpenses">$0</h2>
+                                    <small class="text-muted">Maintenance, taxes, utilities</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card stat-card pulse-animation" style="animation-delay: 0.4s">
+                                <div class="card-body">
+                                    <h6 class="text-muted">Net Profit</h6>
+                                    <h2 class="text-primary" id="netProfit">$0</h2>
+                                    <small class="text-muted" id="profitMargin">0% profit margin</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header bg-white">
+                                    <h5 class="mb-0">Revenue vs Expenses</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="revenueChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header bg-white">
+                                    <h5 class="mb-0">Expense Breakdown</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="expenseChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                 Profile Section 
+                <!-- Receipts Section -->
+                <div id="receipts-section" class="content-section" style="display: none;">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h1 class="h2">Receipt Management</h1>
+                        <button type="button" class="btn btn-primary" onclick="showGenerateReceiptModal()">
+                            <i class="bi bi-plus-circle"></i> Generate Receipt
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Receipt #</th>
+                                            <th>Tenant/Buyer</th>
+                                            <th>Property</th>
+                                            <th>Amount</th>
+                                            <th>Date</th>
+                                            <th>Type</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="receiptsTable">
+                                        <!-- Receipts will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map Section -->
+                <div id="map-section" class="content-section" style="display: none;">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h1 class="h2">Property Map View</h1>
+                        <div class="btn-group">
+                            <button class="btn btn-outline-secondary" onclick="centerMap()">
+                                <i class="bi bi-geo-alt"></i> Center Map
+                            </button>
+                            <button class="btn btn-outline-secondary" onclick="toggleMapType()">
+                                <i class="bi bi-layers"></i> Toggle View
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <div id="map"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Section -->
                 <div id="profile-section" class="content-section" style="display: none;">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
                         <h1 class="h2">Profile & Settings</h1>
                     </div>
                     <div class="row">
                         <div class="col-md-8">
                             <div class="card">
-                                <div class="card-header">
+                                <div class="card-header bg-white">
                                     <h5 class="mb-0">Personal Information</h5>
                                 </div>
                                 <div class="card-body">
                                     <form id="profileForm">
                                         <div class="mb-3">
                                             <label class="form-label">Full Name</label>
-                                            <input type="text" class="form-control" value="John Doe">
+                                            <input type="text" class="form-control" id="profileName" required>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Email</label>
-                                            <input type="email" class="form-control" value="john.doe@example.com">
+                                            <input type="email" class="form-control" id="profileEmail" required>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Phone</label>
-                                            <input type="tel" class="form-control" value="+1 234 567 8900">
+                                            <input type="tel" class="form-control" id="profilePhone" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Company Name</label>
+                                            <input type="text" class="form-control" id="profileCompany" value="Dallah Home">
                                         </div>
                                         <button type="submit" class="btn btn-primary">Save Changes</button>
                                     </form>
@@ -598,7 +706,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="card">
-                                <div class="card-header">
+                                <div class="card-header bg-white">
                                     <h5 class="mb-0">Security</h5>
                                 </div>
                                 <div class="card-body">
@@ -609,80 +717,72 @@
                         </div>
                     </div>
                 </div>
-
-                 Settings Section 
-                <div id="settings-section" class="content-section" style="display: none;">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">Account Settings</h1>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5>Notification Preferences</h5>
-                            <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" id="emailNotif" checked>
-                                <label class="form-check-label" for="emailNotif">Email Notifications</label>
-                            </div>
-                            <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" id="rentReminders" checked>
-                                <label class="form-check-label" for="rentReminders">Rent Due Reminders</label>
-                            </div>
-                            <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" id="maintenanceAlerts" checked>
-                                <label class="form-check-label" for="maintenanceAlerts">Maintenance Alerts</label>
-                            </div>
-                            <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" id="leaseExpiry" checked>
-                                <label class="form-check-label" for="leaseExpiry">Lease Expiry Notifications</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </main>
         </div>
     </div>
 
-     Add Property Modal 
-    <div class="modal fade" id="addPropertyModal" tabindex="-1">
+    <!-- Add/Edit Property Modal -->
+    <div class="modal fade" id="propertyModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add New Property</h5>
+                    <h5 class="modal-title" id="propertyModalTitle">Add New Property</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addPropertyForm">
+                    <form id="propertyForm">
+                        <input type="hidden" id="propertyId">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Property Name</label>
+                                <label class="form-label">Property Name *</label>
                                 <input type="text" class="form-control" id="propertyName" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Property Type</label>
+                                <label class="form-label">Property Type *</label>
                                 <select class="form-select" id="propertyType" required>
                                     <option value="">Select Type</option>
                                     <option value="apartment">Apartment</option>
                                     <option value="house">House</option>
-                                    <option value="office">Office</option>
+                                    <option value="villa">Villa</option>
                                     <option value="land">Land</option>
+                                    <option value="commercial">Commercial</option>
                                 </select>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Address</label>
+                            <label class="form-label">Address *</label>
                             <input type="text" class="form-control" id="propertyAddress" required>
                         </div>
                         <div class="row">
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">City</label>
+                                <label class="form-label">City *</label>
                                 <input type="text" class="form-control" id="propertyCity" required>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Number of Units</label>
-                                <input type="number" class="form-control" id="propertyUnits" required>
+                                <label class="form-label">Bedrooms</label>
+                                <input type="number" class="form-control" id="propertyBedrooms" min="0">
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Monthly Rent</label>
-                                <input type="number" class="form-control" id="propertyRent" required>
+                                <label class="form-label">Bathrooms</label>
+                                <input type="number" class="form-control" id="propertyBathrooms" min="0">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Area (sq ft)</label>
+                                <input type="number" class="form-control" id="propertyArea" min="0">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Price *</label>
+                                <input type="number" class="form-control" id="propertyPrice" required min="0">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Status *</label>
+                                <select class="form-select" id="propertyStatus" required>
+                                    <option value="available">Available</option>
+                                    <option value="rented">Rented</option>
+                                    <option value="sold">Sold</option>
+                                </select>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -690,174 +790,215 @@
                             <textarea class="form-control" id="propertyDescription" rows="3"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Amenities</label>
-                            <input type="text" class="form-control" id="propertyAmenities" placeholder="e.g., Wi-Fi, Parking, Balcony">
+                            <label class="form-label">Amenities (comma separated)</label>
+                            <input type="text" class="form-control" id="propertyAmenities" placeholder="e.g., Wi-Fi, Parking, Pool, Gym">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Property Images</label>
-                            <input type="file" class="form-control" id="propertyImages" multiple accept="image/*">
+                            <label class="form-label">Location Coordinates (for map)</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="number" step="any" class="form-control" id="propertyLat" placeholder="Latitude">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="number" step="any" class="form-control" id="propertyLng" placeholder="Longitude">
+                                </div>
+                            </div>
+                            <small class="text-muted">Leave empty to use address geocoding</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Property Images *</label>
+                            <input type="file" class="form-control" id="propertyImages" multiple accept="image/*" onchange="previewImages(event)">
+                            <small class="text-muted">You can select multiple images</small>
+                            <div id="imagePreviewContainer" class="image-preview-container"></div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="addProperty()">Add Property</button>
+                    <button type="button" class="btn btn-primary" onclick="saveProperty()">
+                        <span id="savePropertyBtn">Save Property</span>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-     Add Tenant Modal 
-    <div class="modal fade" id="addTenantModal" tabindex="-1">
+    <!-- Add Tenant/Buyer Modal -->
+    <div class="modal fade" id="tenantModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add New Tenant</h5>
+                    <h5 class="modal-title">Add Tenant/Buyer</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addTenantForm">
+                    <form id="tenantForm">
                         <div class="mb-3">
-                            <label class="form-label">Tenant Name</label>
+                            <label class="form-label">Type *</label>
+                            <select class="form-select" id="tenantType" required onchange="toggleTenantFields()">
+                                <option value="renter">Renter</option>
+                                <option value="buyer">Buyer</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Full Name *</label>
                             <input type="text" class="form-control" id="tenantName" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Email</label>
+                            <label class="form-label">Email *</label>
                             <input type="email" class="form-control" id="tenantEmail" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Phone</label>
+                            <label class="form-label">Phone *</label>
                             <input type="tel" class="form-control" id="tenantPhone" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Property</label>
+                            <label class="form-label">Property *</label>
                             <select class="form-select" id="tenantProperty" required>
                                 <option value="">Select Property</option>
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Unit Number</label>
-                            <input type="text" class="form-control" id="tenantUnit" required>
+                        
+                        <!-- Renter specific fields -->
+                        <div id="renterFields">
+                            <div class="mb-3">
+                                <label class="form-label">Unit Number</label>
+                                <input type="text" class="form-control" id="tenantUnit">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Lease Start *</label>
+                                    <input type="date" class="form-control" id="leaseStart">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Lease End *</label>
+                                    <input type="date" class="form-control" id="leaseEnd">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Monthly Rent *</label>
+                                <input type="number" class="form-control" id="tenantRent" min="0">
+                            </div>
+                        </div>
+
+                        <!-- Buyer specific fields -->
+                        <div id="buyerFields" style="display: none;">
+                            <div class="mb-3">
+                                <label class="form-label">Purchase Date *</label>
+                                <input type="date" class="form-control" id="purchaseDate">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Purchase Price *</label>
+                                <input type="number" class="form-control" id="purchasePrice" min="0">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Payment Status *</label>
+                                <select class="form-select" id="paymentStatus">
+                                    <option value="paid">Fully Paid</option>
+                                    <option value="partial">Partial Payment</option>
+                                    <option value="pending">Pending</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveTenant()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generate Receipt Modal -->
+    <div class="modal fade" id="receiptModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Generate Receipt</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="receiptForm" class="mb-4">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Select Tenant/Buyer *</label>
+                                <select class="form-select" id="receiptTenant" required onchange="loadTenantDetails()">
+                                    <option value="">Select...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Receipt Type *</label>
+                                <select class="form-select" id="receiptType" required>
+                                    <option value="rent">Rent Payment</option>
+                                    <option value="purchase">Property Purchase</option>
+                                    <option value="deposit">Security Deposit</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Lease Start</label>
-                                <input type="date" class="form-control" id="leaseStart" required>
+                                <label class="form-label">Amount *</label>
+                                <input type="number" class="form-control" id="receiptAmount" required min="0">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Lease End</label>
-                                <input type="date" class="form-control" id="leaseEnd" required>
+                                <label class="form-label">Payment Method *</label>
+                                <select class="form-select" id="receiptPaymentMethod" required>
+                                    <option value="cash">Cash</option>
+                                    <option value="bank">Bank Transfer</option>
+                                    <option value="card">Credit/Debit Card</option>
+                                    <option value="check">Check</option>
+                                </select>
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Monthly Rent</label>
-                            <input type="number" class="form-control" id="tenantRent" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="addTenant()">Add Tenant</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-     Record Payment Modal 
-    <div class="modal fade" id="recordPaymentModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Record Payment</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="recordPaymentForm">
-                        <div class="mb-3">
-                            <label class="form-label">Tenant</label>
-                            <select class="form-select" id="paymentTenant" required>
-                                <option value="">Select Tenant</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Amount</label>
-                            <input type="number" class="form-control" id="paymentAmount" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Payment Method</label>
-                            <select class="form-select" id="paymentMethod" required>
-                                <option value="">Select Method</option>
-                                <option value="cash">Cash</option>
-                                <option value="bank">Bank Transfer</option>
-                                <option value="card">Credit/Debit Card</option>
-                                <option value="mpesa">M-Pesa</option>
-                                <option value="paypal">PayPal</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Payment Date</label>
-                            <input type="date" class="form-control" id="paymentDate" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Notes</label>
-                            <textarea class="form-control" id="paymentNotes" rows="2"></textarea>
+                            <textarea class="form-control" id="receiptNotes" rows="2"></textarea>
                         </div>
+                        <button type="button" class="btn btn-primary" onclick="generateReceipt()">
+                            <i class="bi bi-file-earmark-text"></i> Generate Receipt
+                        </button>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="recordPayment()">Record Payment</button>
+
+                    <!-- Receipt Preview -->
+                    <div id="receiptPreview" style="display: none;">
+                        <hr>
+                        <div class="card">
+                            <div class="card-body" id="receiptContent" style="position: relative; background: white; padding: 40px;">
+                                <!-- Receipt content will be generated here -->
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <button class="btn btn-success" onclick="printReceipt()">
+                                <i class="bi bi-printer"></i> Print Receipt
+                            </button>
+                            <button class="btn btn-outline-secondary" onclick="downloadReceipt()">
+                                <i class="bi bi-download"></i> Download PDF
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-     Add Maintenance Modal 
-    <div class="modal fade" id="addMaintenanceModal" tabindex="-1">
-        <div class="modal-dialog">
+    <!-- Property Details Modal -->
+    <div class="modal fade" id="propertyDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">New Work Order</h5>
+                    <h5 class="modal-title" id="propertyDetailsTitle">Property Details</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <form id="addMaintenanceForm">
-                        <div class="mb-3">
-                            <label class="form-label">Property</label>
-                            <select class="form-select" id="maintenanceProperty" required>
-                                <option value="">Select Property</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Issue Description</label>
-                            <textarea class="form-control" id="maintenanceIssue" rows="3" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Priority</label>
-                            <select class="form-select" id="maintenancePriority" required>
-                                <option value="low">Low</option>
-                                <option value="medium">Medium</option>
-                                <option value="high">High</option>
-                                <option value="urgent">Urgent</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Assign To</label>
-                            <input type="text" class="form-control" id="maintenanceAssignee" placeholder="Service provider name">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Estimated Cost</label>
-                            <input type="number" class="form-control" id="maintenanceCost">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Photos</label>
-                            <input type="file" class="form-control" id="maintenancePhotos" multiple accept="image/*">
-                        </div>
-                    </form>
+                <div class="modal-body" id="propertyDetailsContent">
+                    <!-- Property details will be loaded here -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="addMaintenance()">Create Work Order</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="editPropertyFromDetails()">
+                        <i class="bi bi-pencil"></i> Edit Property
+                    </button>
                 </div>
             </div>
         </div>
@@ -865,31 +1006,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
     <script src="app.js"></script>
-    <script>
-        // Protect page: only allow owners
-        document.addEventListener('DOMContentLoaded', function() {
-            let currentUser = null;
-            try { currentUser = JSON.parse(localStorage.getItem('currentUser')); } catch(e) { currentUser = null; }
-            if (!currentUser || currentUser.role !== 'owner') {
-                // Not allowed
-                alert('Access denied. Only property owners can access this page.');
-                window.location.href = 'login.html';
-                return;
-            }
-
-            const ownerNameEl = document.getElementById('ownerName');
-            if (ownerNameEl) ownerNameEl.textContent = currentUser.name || currentUser.email || 'Owner';
-
-            const logoutBtn = document.getElementById('ownerLogout');
-            if (logoutBtn) logoutBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                localStorage.removeItem('currentUser');
-                window.location.href = 'index.html';
-            });
-        });
-    </script>
 </body>
 </html>
-
